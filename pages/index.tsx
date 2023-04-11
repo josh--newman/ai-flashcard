@@ -29,7 +29,7 @@ const Blog: React.FC<Props> = (props) => {
         <h1>Decks</h1>
         <main>
           {props.decks.map((d) => (
-            <p>{d.name}</p>
+            <p key={d.id}>{d.name}</p>
           ))}
         </main>
       </div>
