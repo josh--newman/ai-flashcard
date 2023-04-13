@@ -7,22 +7,34 @@ import { getSession } from "next-auth/react";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  let cardsData = await prisma.card.findMany({
-    where: {
-      User: {
-        email: session.user.email,
-      },
-    },
-  });
 
-  const cards = cardsData.map((card) => ({
-    ...card,
-    createdAt: card.createdAt.toISOString(),
-    updatedAt: card.updatedAt.toISOString(),
-  }));
+  const [lessonsCount, reviewsCount] = await Promise.all([
+    prisma.assignment.count({
+      where: {
+        Card: {
+          User: {
+            email: session.user.email,
+          },
+        },
+        started_at: null,
+      },
+    }),
+    prisma.assignment.count({
+      where: {
+        Card: {
+          User: {
+            email: session.user.email,
+          },
+        },
+        availableAt: {
+          lte: new Date(),
+        },
+      },
+    }),
+  ]);
 
   return {
-    props: { cards },
+    props: { lessonsCount, reviewsCount },
   };
 };
 
@@ -77,7 +89,8 @@ const CardForm: React.FC<CardFormProps> = ({ onDone }) => {
 };
 
 type Props = {
-  cards: Prisma.CardGetPayload<true>[];
+  lessonsCount: number;
+  reviewsCount: number;
 };
 
 const Homepage: React.FC<Props> = (props) => {
@@ -90,16 +103,17 @@ const Homepage: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>Cards</h1>
         <main>
           {showForm ? (
             <CardForm onDone={toggleForm} />
           ) : (
             <button onClick={toggleForm}>+ Add</button>
           )}
-          {props.cards.map((card) => (
-            <p key={card.id}>{card.front}</p>
-          ))}
+
+          <h2>Lessons</h2>
+          <p>{props.lessonsCount}</p>
+          <h2>Reviews</h2>
+          <p>{props.reviewsCount}</p>
         </main>
       </div>
     </Layout>
