@@ -61,7 +61,7 @@ model User {
 }
 
 model Deck {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
@@ -74,14 +74,14 @@ model Deck {
 }
 
 model Card {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
   front      String?
   back       String?
   Deck       Deck?       @relation(fields: [deckId], references: [id])
-  deckId     Int?
+  deckId     String?
   User       User           @relation(fields: [userId], references: [id])
   userId     String
   Assignment Assignment?
@@ -91,13 +91,13 @@ model Card {
 }
 
 model Assignment {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
   availableAt DateTime?
-  Card        Card      @relation(fields: [cardId], references: [id])
-  cardId      Int       @unique
+  Card        Card      @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  cardId      String       @unique
   started_at  DateTime?
   srsStage    Int       @default(1)
   hidden      Boolean   @default(false)
@@ -107,14 +107,14 @@ model Assignment {
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
-  Assignment       Assignment @relation(fields: [assignmentId], references: [id])
-  assignmentId     Int
-  Card             Card       @relation(fields: [cardId], references: [id])
-  cardId           Int
+  Assignment       Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  assignmentId     String
+  Card             Card       @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  cardId           String
   startingSrsStage Int
   endingSrsStage   Int
   incorrectAnswers Int
