@@ -1,9 +1,9 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { Prisma } from "@prisma/client";
+import Link from "next/link";
+import { getSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
-import { getSession } from "next-auth/react";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -111,9 +111,13 @@ const Homepage: React.FC<Props> = (props) => {
           )}
 
           <h2>Lessons</h2>
-          <p>{props.lessonsCount}</p>
+          <p>
+            <Link href="/lessons">{props.lessonsCount}</Link>
+          </p>
           <h2>Reviews</h2>
-          <p>{props.reviewsCount}</p>
+          <p>
+            <Link href="/reviews">{props.reviewsCount}</Link>
+          </p>
         </main>
       </div>
     </Layout>
