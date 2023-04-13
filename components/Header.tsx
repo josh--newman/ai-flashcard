@@ -1,37 +1,28 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 
 const Header: React.FC = () => {
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  let left = (
-    <div className="left">
-      <style jsx>{`
-        .bold {
-          font-weight: bold;
-        }
+  const { data: session, status } = useSession();
 
-        a {
-          text-decoration: none;
-          color: #000;
-          display: inline-block;
-        }
+  let left = null;
 
-        .left a[data-active="true"] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-      `}</style>
+  let right = session ? (
+    <div>
+      <p>
+        {session.user.name} ({session.user.email})
+      </p>
+    </div>
+  ) : (
+    <div className="right">
+      <Link href="/api/auth/signin">Log in</Link>
     </div>
   );
-
-  let right = null;
 
   return (
     <nav>
