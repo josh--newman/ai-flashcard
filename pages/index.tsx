@@ -1,35 +1,37 @@
 import React from "react";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
+import { Prisma } from "@prisma/client";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
+import { getSession } from "next-auth/react";
 
-export const getStaticProps: GetStaticProps = async () => {
-  const decksData = await prisma.deck.findMany();
-  const decks = decksData.map((d) => {
-    return {
-      ...d,
-      updatedAt: d.updatedAt.toISOString(),
-      createdAt: d.createdAt.toISOString(),
-    };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  const cards = await prisma.card.findMany({
+    where: {
+      User: {
+        email: session.user.email,
+      },
+    },
   });
+
   return {
-    props: { decks },
-    revalidate: 10,
+    props: { cards },
   };
 };
 
 type Props = {
-  decks: any;
+  cards: Prisma.CardGetPayload<true>[];
 };
 
-const Blog: React.FC<Props> = (props) => {
+const Homepage: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>Decks</h1>
+        <h1>Cards</h1>
         <main>
-          {props.decks.map((d) => (
-            <p key={d.id}>{d.name}</p>
+          {props.cards.map((card) => (
+            <p key={card.id}>{card.front}</p>
           ))}
         </main>
       </div>
@@ -37,4 +39,4 @@ const Blog: React.FC<Props> = (props) => {
   );
 };
 
-export default Blog;
+export default Homepage;
