@@ -1,18 +1,48 @@
 import React from "react";
 import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
+import { Card } from "@prisma/client";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
-import { getSession } from "next-auth/react";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
+  const assignments = await prisma.card.findMany({
+    where: {
+      User: {
+        email: session.user.email,
+      },
+      Assignment: {
+        availableAt: {
+          lte: new Date(),
+        },
+      },
+    },
+    include: {
+      Assignment: true,
+    },
+  });
+
   return {
-    props: {},
+    props: {
+      reviews: assignments.map((assignment) => ({
+        ...assignment,
+        createdAt: assignment.createdAt.toISOString(),
+        updatedAt: assignment.updatedAt.toISOString(),
+        Assignment: {
+          ...assignment.Assignment,
+          createdAt: assignment.Assignment.createdAt.toISOString(),
+          updatedAt: assignment.Assignment.updatedAt.toISOString(),
+        },
+      })),
+    },
   };
 };
 
-type Props = {};
+interface Props {
+  reviews: Card[];
+}
 
 const Reviews: React.FC<Props> = (props) => {
   return (
