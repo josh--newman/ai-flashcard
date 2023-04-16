@@ -8,13 +8,18 @@ import { calculateSrsStageAndReviewDate } from "../../../../utils/calculateSrsSt
 export default async function handle(req, res) {
   const { success, numFailures } = req.body;
 
-  console.log("GRADE ASSIGNMENT");
-
   const session = await getServerSession(req, res, authOptions);
 
   const assignment = await prisma.assignment.findUnique({
     where: {
       id: req.query.id,
+    },
+    include: {
+      Card: {
+        include: {
+          User: true,
+        },
+      },
     },
   });
 
@@ -22,11 +27,9 @@ export default async function handle(req, res) {
     return res.status(404).json({ error: "Assignment not found" });
   }
 
-  // Grade assignment
-  // If success, increment the assignments srsStage
-  // If failure, decrement the assignments srsStage
-  // Calculate the next reviewDate
-  // Create a review object
+  if (assignment.Card.User.email !== session.user.email) {
+    return res.status(403).json({ error: "Not authorized" });
+  }
 
   const { newSrsStage, newReviewDate } = calculateSrsStageAndReviewDate(
     success,
@@ -34,12 +37,24 @@ export default async function handle(req, res) {
     assignment
   );
 
-  // prisma.assignment.update({
-  //   data: {},
-  //   where: {
-  //     id: req.query.id,
-  //   },
-  // });
+  const result = await prisma.assignment.update({
+    data: {
+      srsStage: newSrsStage,
+      availableAt: newReviewDate,
+      started_at: assignment.started_at ?? new Date(),
+      Reviews: {
+        create: {
+          startingSrsStage: assignment.srsStage,
+          endingSrsStage: newSrsStage,
+          incorrectAnswers: numFailures,
+          cardId: assignment.cardId,
+        },
+      },
+    },
+    where: {
+      id: req.query.id,
+    },
+  });
 
-  return res.json({ success });
+  return res.json(result);
 }

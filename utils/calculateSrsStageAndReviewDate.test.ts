@@ -15,7 +15,8 @@ describe("calculateSrsStageAndReviewDate", () => {
     it("stage 0 (new) -> 1", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
-          srsStage: 0,
+          srsStage: 1,
+          started_at: null,
         })
       ).toEqual({
         newSrsStage: 1,
@@ -27,6 +28,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 1,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 2,
@@ -38,6 +40,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 2,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 3,
@@ -49,6 +52,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 3,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 4,
@@ -60,6 +64,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 4,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 5,
@@ -71,6 +76,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 5,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 6,
@@ -82,6 +88,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 6,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 7,
@@ -93,6 +100,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 7,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 8,
@@ -104,6 +112,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 8,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 9,
@@ -118,6 +127,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 2,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 3,
@@ -130,6 +140,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 2,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 3,
@@ -142,6 +153,7 @@ describe("calculateSrsStageAndReviewDate", () => {
       expect(
         calculateSrsStageAndReviewDate(true, 0, {
           srsStage: 2,
+          started_at: new Date("2023-01-01T00:00:00.000Z"),
         })
       ).toEqual({
         newSrsStage: 3,
@@ -153,6 +165,7 @@ describe("calculateSrsStageAndReviewDate", () => {
   it("handles failures", () => {
     const assignment = {
       srsStage: 3,
+      started_at: new Date("2023-01-01T00:00:00.000Z"),
     };
 
     const result = calculateSrsStageAndReviewDate(false, 1, assignment);

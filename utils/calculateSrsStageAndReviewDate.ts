@@ -27,9 +27,20 @@ const timeIntervalsMap = {
 export const calculateSrsStageAndReviewDate = (
   success: boolean,
   numFailures: number,
-  assignment: Pick<Assignment, "srsStage">
+  assignment: Pick<Assignment, "srsStage" | "started_at">
 ) => {
   // Shamelessly taken from Wanikani: https://knowledge.wanikani.com/wanikani/srs-stages/
+
+  // Special case for new lessons
+  if (!assignment.started_at) {
+    return {
+      newSrsStage: 1,
+      newReviewDate: roundToHourCeil(
+        add(Date.now(), { hours: timeIntervalsMap[1] })
+      ),
+    };
+  }
+
   const incorrectAdjustmentCount = Math.ceil(numFailures / 2);
   const srsPenaltyFactor = assignment.srsStage >= 5 ? 2 : 1;
 
