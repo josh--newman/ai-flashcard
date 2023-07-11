@@ -3,6 +3,8 @@ import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
 import { getSession } from "next-auth/react";
+import { Assignment, Card } from "@prisma/client";
+import { serializedObject } from "../utils/seralizedObject";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -23,22 +25,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      lessons: lessons.map((lesson) => ({
-        ...lesson,
-        createdAt: lesson.createdAt.toISOString(),
-        updatedAt: lesson.updatedAt.toISOString(),
-        Assignment: {
-          ...lesson.Assignment,
-          createdAt: lesson.Assignment.createdAt.toISOString(),
-          updatedAt: lesson.Assignment.updatedAt.toISOString(),
-        },
-      })),
+      lessons: serializedObject(lessons),
     },
   };
 };
 
+type Lesson = Card & {
+  Assignment: Assignment;
+};
+
 type Props = {
-  lessons: any;
+  lessons: Lesson[];
 };
 
 const Lessons: React.FC<Props> = (props) => {
@@ -47,7 +44,13 @@ const Lessons: React.FC<Props> = (props) => {
       <div className="page">
         <main>
           <h1>Lessons</h1>
-          <p>New cards get reviewed here.</p>
+          {props.lessons.map((lesson) => (
+            <div key={lesson.id}>
+              <div>{lesson.front}</div>
+              <div>{lesson.back}</div>
+              <div>{lesson.Assignment.createdAt as unknown as string}</div>
+            </div>
+          ))}
         </main>
       </div>
     </Layout>
