@@ -1,4 +1,3 @@
-import { Assignment } from "@prisma/client";
 import { calculateSrsStageAndReviewDate } from "./calculateSrsStageAndReviewDate";
 
 describe("calculateSrsStageAndReviewDate", () => {
