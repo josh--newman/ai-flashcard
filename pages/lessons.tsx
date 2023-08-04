@@ -1,10 +1,10 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import Layout from "../components/Layout";
-import prisma from "../lib/prisma";
 import { getSession } from "next-auth/react";
-import { Assignment, Card } from "@prisma/client";
+import prisma from "../lib/prisma";
+import { Card } from "../types";
 import { serializedObject } from "../utils/seralizedObject";
+import ReviewContainer from "../components/ReviewContainer";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -30,31 +30,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-type Lesson = Card & {
-  Assignment: Assignment;
-};
-
 type Props = {
-  lessons: Lesson[];
+  lessons: Card[];
 };
 
 const Lessons: React.FC<Props> = (props) => {
-  return (
-    <Layout>
-      <div className="page">
-        <main>
-          <h1>Lessons</h1>
-          {props.lessons.map((lesson) => (
-            <div key={lesson.id}>
-              <div>{lesson.front}</div>
-              <div>{lesson.back}</div>
-              <div>{lesson.Assignment.createdAt as unknown as string}</div>
-            </div>
-          ))}
-        </main>
-      </div>
-    </Layout>
-  );
+  return <ReviewContainer cards={props.lessons} />;
 };
 
 export default Lessons;
