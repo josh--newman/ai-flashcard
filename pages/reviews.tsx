@@ -4,6 +4,7 @@ import { getSession } from "next-auth/react";
 import { Card } from "@prisma/client";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
+import { serializedObject } from "../utils/seralizedObject";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -26,16 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      reviews: assignments.map((assignment) => ({
-        ...assignment,
-        createdAt: assignment.createdAt.toISOString(),
-        updatedAt: assignment.updatedAt.toISOString(),
-        Assignment: {
-          ...assignment.Assignment,
-          createdAt: assignment.Assignment.createdAt.toISOString(),
-          updatedAt: assignment.Assignment.updatedAt.toISOString(),
-        },
-      })),
+      reviews: serializedObject(assignments),
     },
   };
 };

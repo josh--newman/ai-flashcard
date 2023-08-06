@@ -3,7 +3,7 @@ import { Card as CardType } from "../types";
 
 type Props = {
   card: CardType;
-  onGrade: () => void;
+  onGrade: (success: boolean) => void;
 };
 
 type CardSide = "front" | "back";
@@ -18,8 +18,8 @@ const Card: FC<Props> = ({ card, onGrade }) => {
   ) : (
     <div>
       <div>{card.back}</div>
-      <button onClick={onGrade}>❌</button>
-      <button onClick={onGrade}>✅</button>
+      <button onClick={() => onGrade(false)}>❌</button>
+      <button onClick={() => onGrade(true)}>✅</button>
     </div>
   );
 };
