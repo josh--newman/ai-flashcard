@@ -1,5 +1,7 @@
 import { Assignment, Card as PrismaCard } from "@prisma/client";
 
-export type Card = PrismaCard & {
-  Assignment: Assignment;
+type WithoutDates<T> = Omit<T, "createdAt" | "updatedAt">;
+
+export type Card = WithoutDates<PrismaCard> & {
+  Assignment: Pick<Assignment, "id">;
 };
