@@ -1,12 +1,12 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { getSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
+import { auth } from "../utils/auth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
+  const session = await auth(context.req, context.res);
 
   const [lessonsCount, reviewsCount] = await Promise.all([
     prisma.assignment.count({
