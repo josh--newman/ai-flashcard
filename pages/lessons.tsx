@@ -1,13 +1,13 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
 import prisma from "../lib/prisma";
 import { Card } from "../types";
 import { serializedObject } from "../utils/seralizedObject";
 import ReviewContainer from "../components/ReviewContainer";
+import { auth } from "../utils/auth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
+  const session = await auth(context.req, context.res);
 
   if (!session) {
     return {
