@@ -46,6 +46,7 @@ type Props = {
 };
 
 const Lessons: React.FC<Props> = (props) => {
+  console.log(props.lessons);
   return (
     <Layout>
       <div className="page">

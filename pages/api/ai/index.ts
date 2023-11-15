@@ -1,16 +1,16 @@
 import { OpenAI } from "openai";
 
 // POST /api/ai
-// Required fields in body: sentence, target_word
+// Required fields in body: sentence, targetWord
 export default async function handle(req, res) {
   const configuration = {
     apiKey: process.env.OPENAI_API_KEY,
   };
   const openai = new OpenAI(configuration);
 
-  const { sentence, target_word } = req.body;
+  const { sentence, targetWord } = req.body;
 
-  if (!sentence || !target_word) {
+  if (!sentence || !targetWord) {
     return res.status(400).json({ error: "Missing fields" });
   }
 
@@ -47,7 +47,7 @@ export default async function handle(req, res) {
       },
       {
         role: "user",
-        content: `${sentence}\n${target_word}`,
+        content: `${sentence}\n${targetWord}`,
       },
     ],
     temperature: 0,

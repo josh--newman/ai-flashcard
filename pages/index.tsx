@@ -4,6 +4,7 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
 import { auth } from "../utils/auth";
+import CardForm from "../components/CardForm";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await auth(context.req, context.res);
@@ -46,56 +47,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: { lessonsCount, reviewsCount },
   };
-};
-
-type CardFormProps = {
-  onDone: () => void;
-};
-
-const CardForm: React.FC<CardFormProps> = ({ onDone }) => {
-  const [front, setFront] = React.useState("");
-  const [back, setBack] = React.useState("");
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const body = { front, back };
-      await fetch("/api/card", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
-      onDone();
-    }
-  };
-
-  return (
-    <form onSubmit={onSubmit}>
-      <label htmlFor="front">Front</label>
-      <br />
-      <textarea
-        onChange={(e) => setFront(e.target.value)}
-        name="front"
-        id="front"
-      />
-      <br />
-      <label htmlFor="back">Back</label>
-      <br />
-      <textarea
-        onChange={(e) => setBack(e.target.value)}
-        name="back"
-        id="back"
-      />
-      <br />
-      <button disabled={!front || !back} type="submit">
-        Submit
-      </button>
-    </form>
-  );
 };
 
 type Props = {
