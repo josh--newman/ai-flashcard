@@ -7,6 +7,7 @@ Card creation is enhanced with OpenAI to create contextual, relevant, and helpfu
 ### Tech stack
 
 - React
+- Emotion CSS
 - Next.js
   - Utilises the API routes feature for server side functionality
 - Prisma
