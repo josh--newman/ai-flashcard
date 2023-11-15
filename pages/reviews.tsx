@@ -1,6 +1,6 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { Card } from "@prisma/client";
+import { Card as CardType } from "../types";
 import Layout from "../components/Layout";
 import ReviewContainer from "../components/ReviewContainer";
 import prisma from "../lib/prisma";
@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 interface Props {
-  reviews: Card[];
+  reviews: CardType[];
 }
 
 const Reviews: React.FC<Props> = (props) => {

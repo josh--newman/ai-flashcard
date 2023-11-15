@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import prisma from "../lib/prisma";
-import { Card } from "../types";
+import { Card as CardType } from "../types";
 import { serializedObject } from "../utils/seralizedObject";
 import ReviewContainer from "../components/ReviewContainer";
 import Layout from "../components/Layout";
@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 type Props = {
-  lessons: Card[];
+  lessons: CardType[];
 };
 
 const Lessons: React.FC<Props> = (props) => {
