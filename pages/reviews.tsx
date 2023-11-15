@@ -9,6 +9,16 @@ import { serializedObject } from "../utils/seralizedObject";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const assignments = await prisma.card.findMany({
     where: {
       User: {

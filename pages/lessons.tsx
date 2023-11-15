@@ -9,6 +9,16 @@ import ReviewContainer from "../components/ReviewContainer";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const lessons = await prisma.card.findMany({
     where: {
       User: {
