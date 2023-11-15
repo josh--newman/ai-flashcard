@@ -1,10 +1,19 @@
 # AI Flashcard System
 
-This project is an attempt at making a simple, easy to use flashcard app that can be used to study Japanese. It follows the [Wanikani algorithm](https://knowledge.wanikani.com/wanikani/srs-stages/) for spaced repetition.
+A toolset that streamlines immersion based language learning.
 
-Card creation is enhanced with OpenAI to create contextual, relevant, and helpful descriptions for the card reviewer.
+- Flashcard app akin to [Wanikani](https://www.wanikani.com/) that uses an SRS based approach to reviewing cards
+- Browser extension akin to Migaku that can parse subtitles and record audio and take screenshots (to be built)
+- AI powered translation and explanations of grammar/vocabularly
 
-### Tech stack
+## Why?
+
+- Anki has a bad UX
+- Dictionary translations don't properly capture the intent or context of the sentences
+  - AI is much more powerful at describing natural language
+- AI can be used to describe in simple terms, in context, in either target or source language
+
+## Tech stack
 
 - React
 - Emotion CSS
@@ -16,3 +25,7 @@ Card creation is enhanced with OpenAI to create contextual, relevant, and helpfu
   - Hosts the Postgres database
 - OpenAI
   - For card creation
+
+## Quick links
+
+- [Production deployment](https://ai-flashcard-five.vercel.app/)
