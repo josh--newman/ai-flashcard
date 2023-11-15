@@ -8,6 +8,16 @@ import { auth } from "../utils/auth";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await auth(context.req, context.res);
 
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const [lessonsCount, reviewsCount] = await Promise.all([
     prisma.assignment.count({
       where: {
