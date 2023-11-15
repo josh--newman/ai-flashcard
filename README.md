@@ -16,7 +16,6 @@ A toolset that streamlines immersion based language learning.
 ## Tech stack
 
 - React
-- Emotion CSS
 - Next.js
   - Utilises the API routes feature for server side functionality
 - Prisma
