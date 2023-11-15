@@ -2,6 +2,7 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { Card } from "@prisma/client";
 import Layout from "../components/Layout";
+import ReviewContainer from "../components/ReviewContainer";
 import prisma from "../lib/prisma";
 import { serializedObject } from "../utils/seralizedObject";
 import { auth } from "../utils/auth";
@@ -51,7 +52,7 @@ const Reviews: React.FC<Props> = (props) => {
     <Layout>
       <div className="page">
         <main>
-          <h1>Reviews</h1>
+          <ReviewContainer cards={props.reviews} />
         </main>
       </div>
     </Layout>

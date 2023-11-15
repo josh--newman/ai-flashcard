@@ -38,10 +38,6 @@ const ReviewContainer: FC<Props> = ({ cards }) => {
       ? cards.find((c) => c.id === incompleteCards[currentIndex].cardId)
       : null;
 
-  console.log({ currentSeed });
-  console.log({ currentIndex });
-  console.log({ incompleteCards });
-
   useEffect(() => {
     if (incompleteCards.length === 0) {
       router.push("/");
@@ -50,11 +46,12 @@ const ReviewContainer: FC<Props> = ({ cards }) => {
 
   const onGradeCard = useCallback(
     async (success: boolean) => {
-      // await gradeAssignment({
-      //   assignmentId: currentCard.Assignment.id,
-      //   success,
-      //   numFailures: !success ? 1 : 0,
-      // });
+      await gradeAssignment({
+        assignmentId: currentIncompleteCard.Assignment.id,
+        success,
+        numFailures: !success ? 1 : 0,
+      });
+
       if (success) {
         setReviewStack((prev) => {
           return prev.map((card) => {

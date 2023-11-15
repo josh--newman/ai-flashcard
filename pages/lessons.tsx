@@ -4,6 +4,7 @@ import prisma from "../lib/prisma";
 import { Card } from "../types";
 import { serializedObject } from "../utils/seralizedObject";
 import ReviewContainer from "../components/ReviewContainer";
+import Layout from "../components/Layout";
 import { auth } from "../utils/auth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -45,7 +46,15 @@ type Props = {
 };
 
 const Lessons: React.FC<Props> = (props) => {
-  return <ReviewContainer cards={props.lessons} />;
+  return (
+    <Layout>
+      <div className="page">
+        <main>
+          <ReviewContainer cards={props.lessons} />
+        </main>
+      </div>
+    </Layout>
+  );
 };
 
 export default Lessons;
