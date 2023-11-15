@@ -28,3 +28,4 @@ A toolset that streamlines immersion based language learning.
 ## Quick links
 
 - [Production deployment](https://ai-flashcard-five.vercel.app/)
+- [Documentation](https://bright-mochi-c6e.notion.site/AI-Flashcards-eaf932ad743646c1ae3c357fb13bd9a3?pvs=4)
