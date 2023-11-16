@@ -1,23 +1,83 @@
-import React, { ReactNode } from "react";
-import Header from "./Header";
+import { ReactNode } from "react";
+import Nav from "./Nav";
 
-type Props = {
+interface Props {
+  withNav: boolean;
   children: ReactNode;
-};
+}
 
-const Layout: React.FC<Props> = (props) => (
+const Layout = ({ children, withNav = false }: Props) => (
   <div>
-    <Header />
-    <div className="layout">{props.children}</div>
+    <div className="layout">
+      {withNav && <Nav />}
+      {children}
+    </div>
     <style jsx global>{`
-      html {
+      /*
+      1. Use a more-intuitive box-sizing model.
+      */
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
       }
 
-      *,
-      *:before,
-      *:after {
-        box-sizing: inherit;
+      /*
+      2. Remove default margin
+      */
+      * {
+        margin: 0;
+      }
+      /*
+      Typographic tweaks!
+      3. Add accessible line-height
+      4. Improve text rendering
+      */
+      body {
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      /*
+      5. Improve media defaults
+      */
+      img,
+      picture,
+      video,
+      canvas,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+      /*
+      6. Remove built-in form typography styles
+      */
+      input,
+      button,
+      textarea,
+      select {
+        font: inherit;
+      }
+      /*
+      7. Avoid text overflows
+      */
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        overflow-wrap: break-word;
+      }
+      /*
+      8. Create a root stacking context
+      */
+      #root,
+      #__next {
+        isolation: isolate;
+      }
+      html {
+        box-sizing: border-box;
       }
 
       body {
@@ -41,7 +101,9 @@ const Layout: React.FC<Props> = (props) => (
     `}</style>
     <style jsx>{`
       .layout {
-        padding: 0 2rem;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
       }
     `}</style>
   </div>
