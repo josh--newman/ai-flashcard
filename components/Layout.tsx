@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import Nav from "./Nav";
 
 interface Props {
-  withNav: boolean;
+  withNav?: boolean;
   children: ReactNode;
 }
 
