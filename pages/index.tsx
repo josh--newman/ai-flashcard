@@ -1,10 +1,11 @@
+import styles from "./index.module.css";
 import React from "react";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
 import { auth } from "../utils/auth";
 import CardForm from "../components/CardForm";
+import NumberBox from "../components/NumberBox";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await auth(context.req, context.res);
@@ -62,25 +63,28 @@ const Homepage: React.FC<Props> = (props) => {
   };
 
   return (
-    <Layout>
-      <div className="page">
-        <main>
+    <Layout withNav>
+      <main>
+        <section className={styles.dashboardItemsContainer}>
+          <NumberBox
+            title="Lessons"
+            count={props.lessonsCount}
+            href="/lessons"
+          />
+          <NumberBox
+            title="Reviews"
+            count={props.reviewsCount}
+            href="/reviews"
+          />
+        </section>
+        <section>
           {showForm ? (
             <CardForm onDone={toggleForm} />
           ) : (
             <button onClick={toggleForm}>+ Add</button>
           )}
-
-          <h2>Lessons</h2>
-          <p>
-            <Link href="/lessons">{props.lessonsCount}</Link>
-          </p>
-          <h2>Reviews</h2>
-          <p>
-            <Link href="/reviews">{props.reviewsCount}</Link>
-          </p>
-        </main>
-      </div>
+        </section>
+      </main>
     </Layout>
   );
 };
