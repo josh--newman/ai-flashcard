@@ -1,3 +1,4 @@
+import styles from "./ReviewContainer.module.css";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import Card from "./Card";
@@ -88,7 +89,7 @@ const ReviewContainer: FC<Props> = ({ cards }) => {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <Card
         key={currentIncompleteCard.id}
         card={currentIncompleteCard}
