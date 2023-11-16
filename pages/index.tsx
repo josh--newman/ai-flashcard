@@ -1,5 +1,4 @@
 import styles from "./index.module.css";
-import React from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
@@ -50,18 +49,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-type Props = {
+interface Props {
   lessonsCount: number;
   reviewsCount: number;
-};
+}
 
-const Homepage: React.FC<Props> = (props) => {
-  const [showForm, setShowForm] = React.useState(false);
-
-  const toggleForm = () => {
-    setShowForm((prev) => !prev);
-  };
-
+const Homepage = (props: Props) => {
   return (
     <Layout withNav>
       <main>
@@ -78,11 +71,7 @@ const Homepage: React.FC<Props> = (props) => {
           />
         </section>
         <section>
-          {showForm ? (
-            <CardForm onDone={toggleForm} />
-          ) : (
-            <button onClick={toggleForm}>+ Add</button>
-          )}
+          <CardForm />
         </section>
       </main>
     </Layout>

@@ -1,14 +1,12 @@
-import { useState, FC, FormEvent } from "react";
+import styles from "./CardForm.module.css";
+import { useState, FormEvent, useRef } from "react";
 
-interface Props {
-  onDone: () => void;
-}
-
-const CardForm: FC<Props> = ({ onDone }) => {
+const CardForm = () => {
   const [sentence, setSentence] = useState("");
   const [targetWord, setTargetWord] = useState("");
   const [back, setBack] = useState("");
   const [loading, setLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,10 +18,13 @@ const CardForm: FC<Props> = ({ onDone }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+
+      setSentence("");
+      setTargetWord("");
+      setBack("");
+      formRef.current?.reset();
     } catch (e) {
       console.error(e);
-    } finally {
-      onDone();
     }
   };
 
@@ -49,32 +50,32 @@ const CardForm: FC<Props> = ({ onDone }) => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form ref={formRef} className={styles.formContainer} onSubmit={onSubmit}>
       <label htmlFor="sentence">Sentence</label>
-      <br />
       <textarea
+        rows={5}
         onChange={(e) => setSentence(e.target.value)}
         name="sentence"
         id="sentence"
       />
-      <br />
+
       <label htmlFor="targetWord">Target word</label>
-      <br />
-      <textarea
+      <input
+        type="text"
         onChange={(e) => setTargetWord(e.target.value)}
         name="targetWord"
         id="targetWord"
       />
-      <br />
+
       <label htmlFor="back">Back</label>
-      <br />
       <textarea
+        rows={5}
         onChange={(e) => setBack(e.target.value)}
         name="back"
         id="back"
         value={back}
       />
-      <br />
+
       <button disabled={!sentence || !targetWord || !back} type="submit">
         Submit
       </button>
@@ -82,7 +83,7 @@ const CardForm: FC<Props> = ({ onDone }) => {
         disabled={!sentence || !targetWord || loading}
         onClick={generateBack}
       >
-        {loading ? "🔄" : "AI ✨"}
+        {loading ? "Generating..." : "AI ✨"}
       </button>
     </form>
   );
