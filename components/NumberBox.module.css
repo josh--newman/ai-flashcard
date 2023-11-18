@@ -1,5 +1,6 @@
 .outerContainer a {
   all: unset;
+  cursor: pointer;
 }
 
 .innerContainer {
@@ -14,7 +15,7 @@
   background-color: #f7f7f7;
 }
 
-.container:hover {
+.innerContainer:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
 }

@@ -104,6 +104,8 @@ const Layout = ({ children, withNav = false }: Props) => (
         padding: 2rem;
         display: flex;
         flex-direction: column;
+        max-width: 800px;
+        margin: 0 auto;
       }
     `}</style>
   </div>
