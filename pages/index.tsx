@@ -1,10 +1,14 @@
 import styles from "./index.module.css";
 import { GetServerSideProps } from "next";
+import { add } from "date-fns";
 import Layout from "../components/Layout";
 import prisma from "../lib/prisma";
 import { auth } from "../utils/auth";
 import CardForm from "../components/CardForm";
 import NumberBox from "../components/NumberBox";
+import { serializedObject } from "../utils/seralizedObject";
+import UpcomingReviews from "../components/UpcomingReviews";
+import { UpcomingReview } from "../types";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await auth(context.req, context.res);
@@ -19,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const [lessonsCount, reviewsCount] = await Promise.all([
+  const [lessonsCount, reviewsCount, upcomingReviews] = await Promise.all([
     prisma.assignment.count({
       where: {
         Card: {
@@ -42,16 +46,41 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       },
     }),
+    prisma.assignment.groupBy({
+      by: ["availableAt"],
+      where: {
+        Card: {
+          User: {
+            email: session.user.email,
+          },
+        },
+        availableAt: {
+          gte: new Date(),
+          lte: add(new Date(), { days: 2 }),
+        },
+      },
+      _count: {
+        availableAt: true,
+      },
+      orderBy: {
+        availableAt: "asc",
+      },
+    }),
   ]);
 
   return {
-    props: { lessonsCount, reviewsCount },
+    props: {
+      lessonsCount,
+      reviewsCount,
+      upcomingReviews: serializedObject(upcomingReviews),
+    },
   };
 };
 
 interface Props {
   lessonsCount: number;
   reviewsCount: number;
+  upcomingReviews: UpcomingReview[];
 }
 
 const Homepage = (props: Props) => {
@@ -69,6 +98,9 @@ const Homepage = (props: Props) => {
             count={props.reviewsCount}
             href="/reviews"
           />
+        </section>
+        <section className={styles.dashboardItemsContainer}>
+          <UpcomingReviews reviewCounts={props.upcomingReviews} />
         </section>
         <section>
           <CardForm />
