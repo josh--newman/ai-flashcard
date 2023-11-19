@@ -6,7 +6,6 @@ import { calculateSrsStageAndReviewDate } from "../../../../utils/calculateSrsSt
 // POST /api/assignment/:id/grade
 // Required fields in body: success, numFailures
 export default async function handle(req, res) {
-  console.log("MADE IT");
   const { success, numFailures } = req.body;
 
   const session = await getServerSession(req, res, authOptions);
