@@ -8,7 +8,8 @@ import CardForm from "../components/CardForm";
 import NumberBox from "../components/NumberBox";
 import { serializedObject } from "../utils/seralizedObject";
 import UpcomingReviews from "../components/UpcomingReviews";
-import { UpcomingReview } from "../types";
+import { CountByStage, UpcomingReview } from "../types";
+import CardsByStage from "../components/CardsByStage";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await auth(context.req, context.res);
@@ -23,56 +24,77 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const [lessonsCount, reviewsCount, upcomingReviews] = await Promise.all([
-    prisma.assignment.count({
-      where: {
-        Card: {
-          User: {
-            email: session.user.email,
+  const [lessonsCount, reviewsCount, upcomingReviews, countByStage] =
+    await Promise.all([
+      prisma.assignment.count({
+        where: {
+          Card: {
+            User: {
+              email: session.user.email,
+            },
+          },
+          started_at: null,
+        },
+      }),
+      prisma.assignment.count({
+        where: {
+          Card: {
+            User: {
+              email: session.user.email,
+            },
+          },
+          availableAt: {
+            lte: new Date(),
           },
         },
-        started_at: null,
-      },
-    }),
-    prisma.assignment.count({
-      where: {
-        Card: {
-          User: {
-            email: session.user.email,
+      }),
+      prisma.assignment.groupBy({
+        by: ["availableAt"],
+        where: {
+          Card: {
+            User: {
+              email: session.user.email,
+            },
+          },
+          availableAt: {
+            gte: new Date(),
+            lte: add(new Date(), { days: 2 }),
           },
         },
-        availableAt: {
-          lte: new Date(),
+        _count: {
+          availableAt: true,
         },
-      },
-    }),
-    prisma.assignment.groupBy({
-      by: ["availableAt"],
-      where: {
-        Card: {
-          User: {
-            email: session.user.email,
+        orderBy: {
+          availableAt: "asc",
+        },
+      }),
+      prisma.assignment.groupBy({
+        by: ["srsStage"],
+        where: {
+          NOT: {
+            availableAt: null,
+          },
+          Card: {
+            User: {
+              email: session.user.email,
+            },
           },
         },
-        availableAt: {
-          gte: new Date(),
-          lte: add(new Date(), { days: 2 }),
+        _count: {
+          srsStage: true,
         },
-      },
-      _count: {
-        availableAt: true,
-      },
-      orderBy: {
-        availableAt: "asc",
-      },
-    }),
-  ]);
+        orderBy: {
+          srsStage: "asc",
+        },
+      }),
+    ]);
 
   return {
     props: {
       lessonsCount,
       reviewsCount,
       upcomingReviews: serializedObject(upcomingReviews),
+      countByStage,
     },
   };
 };
@@ -81,6 +103,7 @@ interface Props {
   lessonsCount: number;
   reviewsCount: number;
   upcomingReviews: UpcomingReview[];
+  countByStage: CountByStage[];
 }
 
 const Homepage = (props: Props) => {
@@ -102,6 +125,10 @@ const Homepage = (props: Props) => {
         <section className={styles.dashboardItemsContainer}>
           <UpcomingReviews reviewCounts={props.upcomingReviews} />
         </section>
+        {/* WORK IN PROGRESS */}
+        {/* <section className={styles.dashboardItemsContainer}>
+          <CardsByStage countByStage={props.countByStage} />
+        </section> */}
         <section>
           <CardForm />
         </section>

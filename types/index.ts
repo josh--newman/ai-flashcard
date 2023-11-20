@@ -12,3 +12,10 @@ export type UpcomingReview = {
     availableAt: number;
   };
 };
+
+export type CountByStage = {
+  srsStage: number;
+  _count: {
+    srsStage: number;
+  };
+};
