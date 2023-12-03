@@ -17,6 +17,7 @@ export const Default: Story = {
       id: "1",
       front: "Front of card",
       back: "Back of card",
+      targetWord: "card",
       deckId: null,
       userId: "123",
       Assignment: {
