@@ -80,6 +80,7 @@ model Card {
 
   front      String?
   back       String?
+  targetWord String?
   Deck       Deck?       @relation(fields: [deckId], references: [id])
   deckId     String?
   User       User           @relation(fields: [userId], references: [id])

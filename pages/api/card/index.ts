@@ -3,12 +3,18 @@ import { authOptions } from "../../../utils/auth";
 import prisma from "../../../lib/prisma";
 
 // POST /api/card
-// Optional fields in body: front, back
+// Fields in body: front, back, targetWord
 export default async function handle(req, res) {
-  const { front, back } = req.body;
+  const { front, back, targetWord } = req.body;
 
-  if (!front || !back) {
+  if (!front || !back || !targetWord) {
     return res.status(400).json({ error: "Missing fields" });
+  }
+
+  if (!front.includes(targetWord)) {
+    return res
+      .status(400)
+      .json({ error: "Target word not found in front of card" });
   }
 
   const session = await getServerSession(req, res, authOptions);
@@ -18,6 +24,7 @@ export default async function handle(req, res) {
     data: {
       front,
       back,
+      targetWord,
       User: { connect: { email: session?.user?.email } },
       Assignment: {
         create: {},

@@ -12,7 +12,7 @@ const CardForm = () => {
     e.preventDefault();
 
     try {
-      const body = { front: sentence, back };
+      const body = { front: sentence, back, targetWord };
       await fetch("/api/card", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
