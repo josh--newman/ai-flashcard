@@ -24,7 +24,7 @@ export default async function handle(req, res) {
       {
         role: "system",
         content:
-          'You are a Japanese to English translator and grammar teacher. The user will give you a sentence in Japanese and a target word or phrase from the sentence. Your job is to give a rough translation of the sentence and explain the target word as it applies to the sentence. Make the explanation simple and short.\n\nThe user will provide the sentence and target word in the following format:\n"""\nSentence\nTarget word\n"""',
+          'You are a Japanese to English translator and grammar teacher. The user will give you a sentence in Japanese and a target word or phrase from the sentence. Your job is to give a rough translation of the target word, a translation of the sentence and explain the target word as it applies to the sentence. Make the explanation simple and short. Do not use romaji under any circumstances.\n\nThe user will provide the sentence and target word in the following format:\n"""\nSentence\nTarget word\n"""\n\nYour response should look like the following:\n"""\n<target word> (furigana reading) - <translation>\n\n<full sentence translation>\n"""',
       },
       {
         role: "user",
@@ -33,7 +33,7 @@ export default async function handle(req, res) {
       {
         role: "assistant",
         content:
-          '"The children tried doing the work of the tax office."\n\n"税務署" (ぜいむしょ) means "tax office". In this sentence, it is used to specify the type of work the children tried to do. It\'s a place where tax-related matters are handled.',
+          '税務署 (ぜいむしょ) - "tax office"\n\n"The children tried doing the work of the tax office."',
       },
       {
         role: "user",
@@ -43,7 +43,17 @@ export default async function handle(req, res) {
       {
         role: "assistant",
         content:
-          '"It has been 46 years since Megumi Yokota was abducted to North Korea."\n\n"拉致されて" (らちされて) is the passive form of the verb "拉致する" (らちする), which means "to abduct" or "to kidnap". In this sentence, it is used to describe the action that happened to Megumi Yokota. The passive form is used when the subject of the sentence is the one being affected by the action.',
+          '"拉致されて" (らちされて) - passive form of "拉致する" (らちする) - "to abduct" or "to kidnap"\n\n"It has been 46 years since Megumi Yokota was abducted to North Korea."',
+      },
+      {
+        role: "user",
+        content:
+          "ドラマが面白かったので、最終話まで一気に観てしまった\n一気に観てしまった",
+      },
+      {
+        role: "assistant",
+        content:
+          '"一気に観てしまった" (いっきにみてしまった) - "ended up watching all at once"\n\n"Because the drama was interesting, I ended up watching it all the way to the final episode in one go."',
       },
       {
         role: "user",
