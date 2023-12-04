@@ -47,13 +47,15 @@ const ReviewContainer: FC<Props> = ({ cards }) => {
 
   const onGradeCard = useCallback(
     async (success: boolean) => {
-      await gradeAssignment({
-        assignmentId: currentIncompleteCard.Assignment.id,
-        success,
-        numFailures: !success ? 1 : 0,
-      });
-
       if (success) {
+        const cardFailures = incompleteCards[currentIndex].numFailures;
+
+        await gradeAssignment({
+          assignmentId: currentIncompleteCard.Assignment.id,
+          success: cardFailures > 0 ? false : true,
+          numFailures: cardFailures,
+        });
+
         setReviewStack((prev) => {
           return prev.map((card) => {
             if (card.cardId === currentIncompleteCard.id) {
