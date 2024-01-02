@@ -49,12 +49,8 @@ interface Props {
 
 const Reviews: React.FC<Props> = (props) => {
   return (
-    <Layout>
-      <div className="page">
-        <main>
-          <ReviewContainer cards={props.reviews} />
-        </main>
-      </div>
+    <Layout noPadding>
+      <ReviewContainer cards={props.reviews} />
     </Layout>
   );
 };

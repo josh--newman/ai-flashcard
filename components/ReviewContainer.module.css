@@ -1,27 +1,37 @@
 .container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-rows: 100px 1fr 100px;
   text-align: center;
-  height: calc(100vh - 70px);
   flex-direction: column;
   font-size: 2em;
+  height: 100vh;
+}
+
+.header {
+  width: 100%;
+  height: 100px;
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+.cardContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px;
 }
 
 .buttonContainer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
   display: flex;
+  align-items: center;
   justify-content: space-around;
 }
 
 .buttonContainer button {
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
   background: #fff;
   font-size: 24px;
+  height: 60px;
+  width: 60px;
 }

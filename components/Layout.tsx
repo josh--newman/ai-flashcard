@@ -3,12 +3,13 @@ import Nav from "./Nav";
 
 interface Props {
   withNav?: boolean;
+  noPadding?: boolean;
   children: ReactNode;
 }
 
-const Layout = ({ children, withNav = false }: Props) => (
+const Layout = ({ children, withNav = false, noPadding }: Props) => (
   <div>
-    <div className="layout">
+    <div className={`layout ${noPadding ? "no-padding" : ""}`}>
       {withNav && <Nav />}
       {children}
     </div>
@@ -106,6 +107,10 @@ const Layout = ({ children, withNav = false }: Props) => (
         flex-direction: column;
         max-width: 800px;
         margin: 0 auto;
+      }
+
+      .no-padding {
+        padding: 0;
       }
     `}</style>
   </div>

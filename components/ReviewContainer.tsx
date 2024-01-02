@@ -92,7 +92,10 @@ const ReviewContainer: FC<Props> = ({ cards }) => {
 
   return (
     <div className={styles.container}>
-      <Card key={currentIncompleteCard.id} card={currentIncompleteCard} />
+      <div className={styles.header}>Review header</div>
+      <div className={styles.cardContainer}>
+        <Card key={currentIncompleteCard.id} card={currentIncompleteCard} />
+      </div>
       <div className={styles.buttonContainer}>
         <button onClick={() => onGradeCard(false)}>❌</button>
         <button onClick={() => onGradeCard(true)}>✅</button>
