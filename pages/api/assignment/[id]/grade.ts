@@ -37,6 +37,10 @@ export default async function handle(req, res) {
     assignment
   );
 
+  if (newSrsStage < 1) {
+    return res.status(400).json({ error: "SRS stage cannot be below 1" });
+  }
+
   const result = await prisma.assignment.update({
     data: {
       srsStage: newSrsStage,

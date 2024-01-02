@@ -53,7 +53,7 @@ export const calculateSrsStageAndReviewDate = (
   const newReviewDate = roundToHourCeil(add(Date.now(), { hours }));
 
   return {
-    newSrsStage: newSrsStage,
+    newSrsStage: newSrsStage < 1 ? 1 : newSrsStage,
     newReviewDate: newSrsStage === 9 ? null : newReviewDate,
   };
 };
