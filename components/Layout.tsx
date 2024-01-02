@@ -8,12 +8,15 @@ interface Props {
 }
 
 const Layout = ({ children, withNav = false, noPadding }: Props) => (
-  <div>
+  <>
     <div className={`layout ${noPadding ? "no-padding" : ""}`}>
       {withNav && <Nav />}
       {children}
     </div>
     <style jsx global>{`
+      #__next {
+        height: 100%;
+      }
       /*
       1. Use a more-intuitive box-sizing model.
       */
@@ -79,9 +82,11 @@ const Layout = ({ children, withNav = false, noPadding }: Props) => (
       }
       html {
         box-sizing: border-box;
+        height: 100%;
       }
 
       body {
+        height: 100%;
         margin: 0;
         padding: 0;
         font-size: 16px;
@@ -107,13 +112,14 @@ const Layout = ({ children, withNav = false, noPadding }: Props) => (
         flex-direction: column;
         max-width: 800px;
         margin: 0 auto;
+        height: 100%;
       }
 
       .no-padding {
         padding: 0;
       }
     `}</style>
-  </div>
+  </>
 );
 
 export default Layout;
