@@ -1,16 +1,10 @@
 import styles from "./Card.module.css";
 import { useState } from "react";
+import Markdown from "react-markdown";
 import { Card as CardType } from "../types";
 
 const highlightTargetWord = (text: string, target: string) => {
-  const parts = text.split(new RegExp(`(${target})`, "gi"));
-  return parts.map((part, index) =>
-    part.toLowerCase() === target.toLowerCase() ? (
-      <strong key={index}>{part}</strong>
-    ) : (
-      part
-    )
-  );
+  return text.replace(new RegExp(`(${target})`, "gi"), "**$1**");
 };
 
 type Props = {
@@ -26,11 +20,13 @@ const Card = ({ card }: Props) => {
       onClick={() => setFlipped((state) => !state)}
     >
       <div className={styles.card}>
-        {flipped
-          ? card.back
-          : card.targetWord
-          ? highlightTargetWord(card.front, card.targetWord)
-          : card.front}
+        <Markdown>
+          {flipped
+            ? card.back
+            : card.targetWord
+            ? highlightTargetWord(card.front, card.targetWord)
+            : card.front}
+        </Markdown>
       </div>
     </div>
   );

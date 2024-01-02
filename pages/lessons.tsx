@@ -48,12 +48,8 @@ type Props = {
 const Lessons: React.FC<Props> = (props) => {
   console.log(props.lessons);
   return (
-    <Layout>
-      <div className="page">
-        <main>
-          <ReviewContainer cards={props.lessons} />
-        </main>
-      </div>
+    <Layout noPadding>
+      <ReviewContainer cards={props.lessons} />
     </Layout>
   );
 };
