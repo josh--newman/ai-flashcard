@@ -5,6 +5,7 @@ import Card from "./Card";
 import { Card as CardType } from "../types";
 import gradeAssignment from "../lib/gradeAssignment";
 import randomInRange from "../utils/randomInRange";
+import ReviewHeader from "./ReviewHeader";
 
 interface CardStatus {
   cardId: string;
@@ -92,7 +93,11 @@ const ReviewContainer: FC<Props> = ({ cards }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>Review header</div>
+      <ReviewHeader
+        numTotal={cards.length}
+        numCorrect={reviewStack.filter((c) => c.success).length}
+        numLeft={incompleteCards.length}
+      />
       <div className={styles.cardContainer}>
         <Card key={currentIncompleteCard.id} card={currentIncompleteCard} />
       </div>
