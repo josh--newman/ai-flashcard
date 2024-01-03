@@ -1,4 +1,5 @@
 import styles from "./ReviewContainer.module.css";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import Card from "./Card";
@@ -19,6 +20,8 @@ interface Props {
 
 const ReviewContainer: FC<Props> = ({ cards }) => {
   const router = useRouter();
+
+  const mutation = useMutation({ mutationFn: gradeAssignment });
 
   const [reviewStack, setReviewStack] = useState<CardStatus[]>(
     cards.map((card) => ({
@@ -51,7 +54,7 @@ const ReviewContainer: FC<Props> = ({ cards }) => {
       if (success) {
         const cardFailures = incompleteCards[currentIndex].numFailures;
 
-        await gradeAssignment({
+        mutation.mutate({
           assignmentId: currentIncompleteCard.Assignment.id,
           success: cardFailures > 0 ? false : true,
           numFailures: cardFailures,
