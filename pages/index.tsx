@@ -126,9 +126,9 @@ const Homepage = (props: Props) => {
           <UpcomingReviews reviewCounts={props.upcomingReviews} />
         </section>
         {/* WORK IN PROGRESS */}
-        {/* <section className={styles.dashboardItemsContainer}>
+        <section className={styles.dashboardItemsContainer}>
           <CardsByStage countByStage={props.countByStage} />
-        </section> */}
+        </section>
         <section>
           <CardForm />
         </section>
