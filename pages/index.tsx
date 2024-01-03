@@ -125,7 +125,6 @@ const Homepage = (props: Props) => {
         <section className={styles.dashboardItemsContainer}>
           <UpcomingReviews reviewCounts={props.upcomingReviews} />
         </section>
-        {/* WORK IN PROGRESS */}
         <section className={styles.dashboardItemsContainer}>
           <CardsByStage countByStage={props.countByStage} />
         </section>
