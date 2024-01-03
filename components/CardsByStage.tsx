@@ -38,7 +38,10 @@ interface Props {
 const CardsByStage = ({ countByStage }: Props) => {
   const countsByStage = countByStage.reduce((acc, { srsStage, _count }) => {
     const stage = numberToStage[srsStage];
-    acc[stage] = _count.srsStage;
+    acc[stage] && acc[stage] >= 0
+      ? (acc[stage] += _count.srsStage)
+      : (acc[stage] = _count.srsStage);
+
     return acc;
   }, {} as Record<string, number>);
 
@@ -46,7 +49,7 @@ const CardsByStage = ({ countByStage }: Props) => {
     <div className={styles.container}>
       <div className={styles.gridContainer}>
         {stages.map((stage) => (
-          <CardByStage stage={stage} count={countsByStage[stage]} />
+          <CardByStage key={stage} stage={stage} count={countsByStage[stage]} />
         ))}
       </div>
     </div>
