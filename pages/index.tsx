@@ -128,9 +128,9 @@ const Homepage = (props: Props) => {
         <section className={styles.dashboardItemsContainer}>
           <CardsByStage countByStage={props.countByStage} />
         </section>
-        <section>
+        {/* <section>
           <CardForm />
-        </section>
+        </section> */}
       </main>
     </Layout>
   );

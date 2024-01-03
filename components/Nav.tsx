@@ -3,7 +3,12 @@ import { useEffect, useState, useRef } from "react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 
+import CardForm from "./CardForm";
+import Modal from "./FormModal";
+import FormModal from "./FormModal";
+
 const Nav = () => {
+  const [showModal, setShowModal] = useState(false);
   const [isDropdownVisible, setIsDropdownVisibile] = useState(false);
   const menuRef = useRef(null);
 
@@ -28,8 +33,18 @@ const Nav = () => {
   }, []);
 
   return (
-    <div className={styles.navContainer} onClick={toggleDropdown} ref={menuRef}>
-      <div className={styles.profilePhoto}>
+    <div className={styles.navContainer}>
+      <div className={styles.addButton}>
+        <button onClick={() => setShowModal(true)}>+</button>
+        <FormModal onClose={() => setShowModal(false)} show={showModal}>
+          <CardForm onSuccess={() => setShowModal(false)} />
+        </FormModal>
+      </div>
+      <div
+        className={styles.profilePhoto}
+        onClick={toggleDropdown}
+        ref={menuRef}
+      >
         {session && (
           <Image
             src={session.user.image}
@@ -38,13 +53,12 @@ const Nav = () => {
             height={50}
           />
         )}
+        {isDropdownVisible && (
+          <div className={styles.dropdown}>
+            <a onClick={() => signOut()}>Logout</a>
+          </div>
+        )}
       </div>
-
-      {isDropdownVisible && (
-        <div className={styles.dropdown}>
-          <a onClick={() => signOut()}>Logout</a>
-        </div>
-      )}
     </div>
   );
 };

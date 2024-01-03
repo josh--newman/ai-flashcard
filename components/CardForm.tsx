@@ -1,7 +1,11 @@
 import styles from "./CardForm.module.css";
 import { useState, FormEvent, useRef } from "react";
 
-const CardForm = () => {
+interface Props {
+  onSuccess: () => void;
+}
+
+const CardForm = ({ onSuccess }: Props) => {
   const [sentence, setSentence] = useState("");
   const [targetWord, setTargetWord] = useState("");
   const [back, setBack] = useState("");
@@ -23,6 +27,7 @@ const CardForm = () => {
       setTargetWord("");
       setBack("");
       formRef.current?.reset();
+      onSuccess();
     } catch (e) {
       console.error(e);
     }
@@ -76,15 +81,17 @@ const CardForm = () => {
         value={back}
       />
 
-      <button disabled={!sentence || !targetWord || !back} type="submit">
-        Submit
-      </button>
-      <button
-        disabled={!sentence || !targetWord || loading}
-        onClick={generateBack}
-      >
-        {loading ? "Generating..." : "AI ✨"}
-      </button>
+      <div className={styles.buttonGroup}>
+        <button disabled={!sentence || !targetWord || !back} type="submit">
+          Submit
+        </button>
+        <button
+          disabled={!sentence || !targetWord || loading}
+          onClick={generateBack}
+        >
+          {loading ? "Generating..." : "AI ✨"}
+        </button>
+      </div>
     </form>
   );
 };
